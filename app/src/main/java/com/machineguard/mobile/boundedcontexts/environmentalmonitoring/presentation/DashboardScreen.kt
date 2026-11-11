@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
@@ -28,6 +29,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.machineguard.mobile.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,20 +55,27 @@ fun DashboardContent(state: DashboardUiState, onRetry: () -> Unit, modifier: Mod
         ) {
             item(key = "heading") {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("Dashboard", modifier = Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineMedium)
-                    Text("Zonas y monitoreo ambiental", style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        stringResource(R.string.dashboard_title),
+                        modifier = Modifier.semantics { heading() },
+                        style = MaterialTheme.typography.headlineMedium,
+                    )
+                    Text(stringResource(R.string.dashboard_subtitle), style = MaterialTheme.typography.bodyLarge)
                 }
             }
             when (state) {
                 DashboardUiState.Loading -> item(key = "loading") {
-                    DashboardMessage("Cargando zonas…") { CircularProgressIndicator() }
+                    DashboardMessage(stringResource(R.string.dashboard_loading)) { CircularProgressIndicator() }
                 }
                 DashboardUiState.Empty -> item(key = "empty") {
-                    DashboardMessage("No hay zonas disponibles.")
+                    DashboardMessage(stringResource(R.string.dashboard_empty))
                 }
                 DashboardUiState.Error -> item(key = "error") {
-                    DashboardMessage("No pudimos cargar las zonas", "Vuelve a intentarlo para consultar las lecturas.") {
-                        Button(onClick = onRetry) { Text("Reintentar") }
+                    DashboardMessage(
+                        title = stringResource(R.string.dashboard_error_title),
+                        description = stringResource(R.string.dashboard_error_description),
+                    ) {
+                        Button(onClick = onRetry) { Text(stringResource(R.string.dashboard_retry)) }
                     }
                 }
                 is DashboardUiState.Content -> items(state.zones, key = { "zone:${it.id}" }) { ZoneCard(it) }

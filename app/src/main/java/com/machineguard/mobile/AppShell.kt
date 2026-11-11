@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,11 +57,12 @@ fun AppShell() {
         bottomBar = {
             NavigationBar {
                 AppDestination.entries.forEach { destination ->
+                    val destinationLabel = stringResource(destination.labelRes)
                     NavigationBarItem(
                         selected = destination == selected,
                         onClick = { selected = destination },
-                        icon = { Icon(destination.icon(), contentDescription = destination.label) },
-                        label = { Text(destination.label) },
+                        icon = { Icon(destination.icon(), contentDescription = destinationLabel) },
+                        label = { Text(destinationLabel) },
                     )
                 }
             }

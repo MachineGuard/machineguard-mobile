@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pantalla de panel -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_subtitle">Zonas y monitoreo ambiental</string>
+    <string name="dashboard_loading">Cargando zonas…</string>
+    <string name="dashboard_empty">No hay zonas disponibles.</string>
+    <string name="dashboard_error_title">No pudimos cargar las zonas</string>
+    <string name="dashboard_error_description">Vuelve a intentarlo para consultar las lecturas.</string>
+    <string name="dashboard_retry">Reintentar</string>
+
+    <!-- Tarjeta de zona -->
+    <string name="dashboard_sensors_summary">Sensores: %1$d en línea · %2$d sin conexión · %3$d inactivos</string>
+    <string name="dashboard_stale_notice">Últimas lecturas registradas; la información está desactualizada.</string>
+    <string name="dashboard_readings_missing">Sin lecturas disponibles</string>
+    <string name="dashboard_reading_missing">Sin lectura</string>
+    <string name="dashboard_recorded_at">Registrada: %1$s</string>
+    <string name="dashboard_last_updated">Última actualización: %1$s</string>
+    <string name="dashboard_date_missing">Sin fecha disponible</string>
+    <string name="dashboard_point_unnamed">Punto sin nombre</string>
+
+    <!-- Condiciones de zona -->
+    <string name="dashboard_condition_out_of_range">Fuera de rango</string>
+    <string name="dashboard_condition_stale">Desactualizada</string>
+    <string name="dashboard_condition_no_data">Sin datos</string>
+    <string name="dashboard_condition_normal">Normal</string>
+
+    <!-- Variables de lectura -->
+    <string name="dashboard_variable_temperature">Temperatura</string>
+    <string name="dashboard_variable_humidity">Humedad</string>
+</resources>
