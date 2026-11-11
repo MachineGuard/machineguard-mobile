@@ -19,6 +19,16 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.activity.compose.BackHandler
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.IncidentDetailScreen
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.IncidentDetailViewModel
+import com.machineguard.mobile.boundedcontexts.iam.domain.SessionState
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.AlertsScreen
 import com.machineguard.mobile.boundedcontexts.environmentalmonitoring.presentation.DashboardScreen
 import com.machineguard.mobile.boundedcontexts.iam.presentation.SettingsScreen
@@ -34,6 +44,13 @@ fun AppShell() {
     var selected by rememberSaveable { mutableStateOf(AppDestination.Dashboard) }
     // Keeps each tab's saved UI state (for example the alerts filter) when switching tabs.
     val tabState = rememberSaveableStateHolder()
+    // Incidente abierto desde la lista de alertas; mientras exista se muestra su detalle sobre la navegación.
+    var openIncidentId by rememberSaveable { mutableStateOf<String?>(null) }
+
+    openIncidentId?.let { incidentId ->
+        IncidentDetailRoute(incidentId = incidentId, onBack = { openIncidentId = null })
+        return
+    }
 
     Scaffold(
         bottomBar = {
@@ -53,10 +70,27 @@ fun AppShell() {
             tabState.SaveableStateProvider(selected.name) {
                 when (selected) {
                     AppDestination.Dashboard -> DashboardScreen()
-                    AppDestination.Alerts -> AlertsScreen()
+                    AppDestination.Alerts -> AlertsScreen(onOpenIncident = { openIncidentId = it })
                     AppDestination.Settings -> SettingsScreen()
                 }
             }
         }
     }
+}
+
+@Composable
+private fun IncidentDetailRoute(incidentId: String, onBack: () -> Unit) {
+    val container = LocalContext.current.appContainer
+    val session by container.authRepository.session.collectAsState()
+    val canManage = (session as? SessionState.SignedIn)?.user?.canManageIncidents == true
+    val factory = remember(incidentId, canManage) {
+        viewModelFactory {
+            initializer { IncidentDetailViewModel(incidentId, container.incidentsRepository, canManage) }
+        }
+    }
+    BackHandler(onBack = onBack)
+    IncidentDetailScreen(
+        viewModel = viewModel(key = "incident-$incidentId-$canManage", factory = factory),
+        onBack = onBack,
+    )
 }

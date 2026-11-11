@@ -19,10 +19,13 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-/** Informational card: Alert.id is never used as a navigation substitute for incidentId. */
+/**
+ * Alert card. Alert.id is never used as a navigation substitute for incidentId: [onClick] is only set when the
+ * alert has an incident, and opens that incident's detail.
+ */
 @Composable
-fun AlertCard(alert: AlertCardUiModel, modifier: Modifier = Modifier) {
-    Card(modifier = modifier.fillMaxWidth()) {
+fun AlertCard(alert: AlertCardUiModel, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
+    val body: @Composable () -> Unit = {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(alert.message.ifBlank { stringResource(R.string.alerts_message_missing) },
                 modifier = Modifier.semantics { heading() }, style = MaterialTheme.typography.titleMedium)
@@ -40,6 +43,11 @@ fun AlertCard(alert: AlertCardUiModel, modifier: Modifier = Modifier) {
                 Text(stringResource(R.string.alerts_escalated_at, alertDate(it)), style = MaterialTheme.typography.bodySmall)
             }
         }
+    }
+    if (onClick != null) {
+        Card(onClick = onClick, modifier = modifier.fillMaxWidth()) { body() }
+    } else {
+        Card(modifier = modifier.fillMaxWidth()) { body() }
     }
 }
 

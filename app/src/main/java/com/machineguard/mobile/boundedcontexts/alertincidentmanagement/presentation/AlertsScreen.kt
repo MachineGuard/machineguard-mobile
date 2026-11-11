@@ -40,19 +40,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun AlertsScreen(
     viewModel: AlertsViewModel = viewModel(factory = AlertsViewModel.Factory),
+    onOpenIncident: (String) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     // Cada vez que se entra a la pestaña se consultan datos nuevos sin ocultar los actuales.
     LaunchedEffect(Unit) { viewModel.refresh() }
     PullToRefreshBox(isRefreshing = isRefreshing, onRefresh = viewModel::refresh) {
-        AlertsContent(state = state, onRetry = viewModel::retry)
+        AlertsContent(state = state, onRetry = viewModel::retry, onOpenIncident = onOpenIncident)
     }
 }
 
 /** The caller owns loading and retry; only the local display filter is saved here. */
 @Composable
-fun AlertsContent(state: AlertsUiState, onRetry: () -> Unit, modifier: Modifier = Modifier) {
+fun AlertsContent(
+    state: AlertsUiState,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+    onOpenIncident: (String) -> Unit = {},
+) {
     var selectedFilter by rememberSaveable { mutableStateOf(AlertFilter.ACTIVE) }
 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -108,7 +114,7 @@ fun AlertsContent(state: AlertsUiState, onRetry: () -> Unit, modifier: Modifier 
                     if (visible.isEmpty()) {
                         item(key = "filtered-empty") { AlertsMessage(stringResource(R.string.alerts_filter_empty)) }
                     }
-                    items(visible, key = { "alert:${it.id}" }) { AlertCard(it) }
+                    items(visible, key = { "alert:${it.id}" }) { AlertCard(it, onClick = it.incidentId?.let { id -> { onOpenIncident(id) } }) }
                 }
             }
         }
