@@ -124,6 +124,41 @@ class DashboardViewModelTest {
         assertEquals(2, repo.calls)
     }
 
+    @Test
+    fun `refresh keeps the zones visible and replaces them with the new result`() {
+        val repo = FakeZonesRepository(DataResult.Success(listOf(zone("a", DomainZoneCondition.NORMAL))))
+        val viewModel = DashboardViewModel(repo, MutableStateFlow(signedIn))
+
+        repo.result = DataResult.Success(listOf(zone("b", DomainZoneCondition.NORMAL)))
+        viewModel.refresh()
+
+        assertEquals(listOf("b"), (viewModel.state.value as DashboardUiState.Content).zones.map { it.id })
+        assertEquals(false, viewModel.isRefreshing.value)
+        assertEquals(2, repo.calls)
+    }
+
+    @Test
+    fun `failed refresh keeps the previous zones`() {
+        val repo = FakeZonesRepository(DataResult.Success(listOf(zone("a", DomainZoneCondition.NORMAL))))
+        val viewModel = DashboardViewModel(repo, MutableStateFlow(signedIn))
+
+        repo.result = DataResult.Failure(AppError.Timeout)
+        viewModel.refresh()
+
+        assertEquals(listOf("a"), (viewModel.state.value as DashboardUiState.Content).zones.map { it.id })
+    }
+
+    @Test
+    fun `refresh does nothing without a session`() {
+        val repo = FakeZonesRepository(DataResult.Success(listOf(zone("a", DomainZoneCondition.NORMAL))))
+        val viewModel = DashboardViewModel(repo, MutableStateFlow(SessionState.SignedOut()))
+
+        viewModel.refresh()
+
+        assertEquals(0, repo.calls)
+        assertEquals(DashboardUiState.Loading, viewModel.state.value)
+    }
+
     private fun zone(
         id: String,
         condition: DomainZoneCondition,

@@ -16,6 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -33,12 +36,18 @@ import com.machineguard.mobile.R
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertsScreen(
     viewModel: AlertsViewModel = viewModel(factory = AlertsViewModel.Factory),
 ) {
     val state by viewModel.state.collectAsState()
-    AlertsContent(state = state, onRetry = viewModel::retry)
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    // Cada vez que se entra a la pestaña se consultan datos nuevos sin ocultar los actuales.
+    LaunchedEffect(Unit) { viewModel.refresh() }
+    PullToRefreshBox(isRefreshing = isRefreshing, onRefresh = viewModel::refresh) {
+        AlertsContent(state = state, onRetry = viewModel::retry)
+    }
 }
 
 /** The caller owns loading and retry; only the local display filter is saved here. */
