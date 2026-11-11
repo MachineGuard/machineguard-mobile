@@ -21,6 +21,7 @@
     <string name="iam_error_email_invalid">Enter a valid email address.</string>
     <string name="iam_error_password_empty">Enter your password.</string>
     <string name="iam_error_invalid_credentials">Incorrect email or password.</string>
+    <string name="iam_error_too_many_requests">Too many attempts. Wait a moment and try again.</string>
     <string name="iam_error_account_disabled">This account is disabled. Contact your administrator.</string>
     <string name="iam_error_network">No connection. Check your network and try again.</string>
     <string name="iam_error_server">The service is unavailable. Try again later.</string>

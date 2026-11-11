@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MachineGuard</string>
+    <string name="alerts_title">Alertas</string>
+    <string name="alerts_subtitle">Estado y severidad de las alertas</string>
+    <string name="alerts_filters">Filtrar por estado</string>
+    <string name="alerts_filter_active">Activas</string>
+    <string name="alerts_filter_acknowledged">Reconocidas</string>
+    <string name="alerts_filter_all">Todas</string>
+    <string name="alerts_active_description">Incluye alertas pendientes y escaladas.</string>
+    <string name="alerts_loading">Cargando alertas…</string>
+    <string name="alerts_empty">No hay alertas disponibles.</string>
+    <string name="alerts_filter_empty">No hay alertas para este filtro. Prueba con otro estado.</string>
+    <string name="alerts_error">No pudimos cargar las alertas</string>
+    <string name="alerts_error_description">Vuelve a intentarlo para consultar las alertas.</string>
+    <string name="alerts_retry">Reintentar</string>
+    <string name="alerts_result_count">Alertas mostradas: %1$d</string>
+    <string name="alerts_message_missing">Alerta sin descripción</string>
+    <string name="alerts_severity">Severidad: %1$s</string>
+    <string name="alerts_severity_low">Baja</string>
+    <string name="alerts_severity_medium">Media</string>
+    <string name="alerts_severity_high">Alta</string>
+    <string name="alerts_severity_critical">Crítica</string>
+    <string name="alerts_status">Estado: %1$s</string>
+    <string name="alerts_status_pending">Pendiente</string>
+    <string name="alerts_status_acknowledged">Reconocida</string>
+    <string name="alerts_status_escalated">Escalada</string>
+    <string name="alerts_status_closed">Cerrada</string>
+    <string name="alerts_raised_at">Generada: %1$s</string>
+    <string name="alerts_acknowledged_at">Reconocida: %1$s</string>
+    <string name="alerts_escalated_at">Escalada: %1$s</string>
+    <string name="alerts_date_missing">Sin fecha disponible</string>
+    <string name="alerts_severity_unknown">No disponible</string>
+    <string name="alerts_status_unknown">No disponible</string>
 </resources>

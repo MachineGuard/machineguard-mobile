@@ -44,9 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.machineguard.mobile.BuildConfig
 import com.machineguard.mobile.R
-import com.machineguard.mobile.boundedcontexts.iam.application.SessionState
+import com.machineguard.mobile.boundedcontexts.iam.domain.SessionState
 import com.machineguard.mobile.boundedcontexts.iam.application.SessionViewModel
-import com.machineguard.mobile.boundedcontexts.iam.domain.Role
+import com.machineguard.mobile.boundedcontexts.iam.domain.UserRole
 import com.machineguard.mobile.boundedcontexts.iam.domain.UserProfile
 import com.machineguard.mobile.core.theme.MachineGuardTheme
 
@@ -58,7 +58,7 @@ fun SettingsScreen(
     val isSigningOut by viewModel.isSigningOut.collectAsState()
 
     SettingsContent(
-        profile = (session as? SessionState.SignedIn)?.profile,
+        profile = (session as? SessionState.SignedIn)?.user,
         isSigningOut = isSigningOut,
         onSignOut = viewModel::signOut,
     )
@@ -202,7 +202,7 @@ private fun AccountCard(profile: UserProfile) {
             InfoRow(
                 label = stringResource(R.string.iam_settings_role),
                 value = stringResource(
-                    if (profile.role == Role.ADMIN) R.string.iam_role_admin else R.string.iam_role_viewer,
+                    if (profile.role == UserRole.ADMIN) R.string.iam_role_admin else R.string.iam_role_viewer,
                 ),
             )
         }
@@ -231,7 +231,15 @@ private fun InfoRow(label: String, value: String) {
 private fun SettingsContentPreview() {
     MachineGuardTheme {
         SettingsContent(
-            profile = UserProfile("Demo Warehouse Manager", "demo@machineguard.com", Role.ADMIN),
+            profile = UserProfile(
+                id = "00000000-0000-0000-0000-000000000001",
+                organizationId = "00000000-0000-0000-0000-000000000000",
+                organizationName = "Demo",
+                email = "demo@machineguard.com",
+                fullName = "Demo Warehouse Manager",
+                role = UserRole.ADMIN,
+                lastLoginAt = null,
+            ),
             isSigningOut = false,
             onSignOut = {},
         )

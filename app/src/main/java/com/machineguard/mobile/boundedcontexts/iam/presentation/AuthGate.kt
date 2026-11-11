@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.machineguard.mobile.R
-import com.machineguard.mobile.boundedcontexts.iam.application.SessionState
+import com.machineguard.mobile.boundedcontexts.iam.domain.SessionState
 import com.machineguard.mobile.boundedcontexts.iam.application.SessionViewModel
 
 /**
@@ -29,8 +29,8 @@ fun AuthGate(
 ) {
     val state by viewModel.state.collectAsState()
     when (state) {
-        SessionState.Checking -> CheckingSession()
-        SessionState.SignedOut -> LoginScreen()
+        SessionState.Restoring -> CheckingSession()
+        is SessionState.SignedOut -> LoginScreen()
         is SessionState.SignedIn -> content()
     }
 }

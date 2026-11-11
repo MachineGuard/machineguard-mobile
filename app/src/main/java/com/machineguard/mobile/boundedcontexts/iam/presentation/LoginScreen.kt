@@ -50,9 +50,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.machineguard.mobile.R
+import com.machineguard.mobile.boundedcontexts.iam.application.LoginFailure
 import com.machineguard.mobile.boundedcontexts.iam.application.LoginUiState
 import com.machineguard.mobile.boundedcontexts.iam.application.LoginViewModel
-import com.machineguard.mobile.boundedcontexts.iam.domain.AuthFailure
 import com.machineguard.mobile.boundedcontexts.iam.domain.EmailError
 import com.machineguard.mobile.boundedcontexts.iam.domain.PasswordError
 import com.machineguard.mobile.core.theme.MachineGuardTheme
@@ -265,12 +265,13 @@ private fun passwordErrorRes(error: PasswordError): Int = when (error) {
 }
 
 @StringRes
-private fun failureRes(failure: AuthFailure): Int = when (failure) {
-    AuthFailure.InvalidCredentials -> R.string.iam_error_invalid_credentials
-    AuthFailure.AccountDisabled -> R.string.iam_error_account_disabled
-    AuthFailure.Network -> R.string.iam_error_network
-    AuthFailure.Server -> R.string.iam_error_server
-    AuthFailure.Unknown -> R.string.iam_error_unknown
+private fun failureRes(failure: LoginFailure): Int = when (failure) {
+    LoginFailure.InvalidCredentials -> R.string.iam_error_invalid_credentials
+    LoginFailure.TooManyRequests -> R.string.iam_error_too_many_requests
+    LoginFailure.AccountDisabled -> R.string.iam_error_account_disabled
+    LoginFailure.Network -> R.string.iam_error_network
+    LoginFailure.Server -> R.string.iam_error_server
+    LoginFailure.Unknown -> R.string.iam_error_unknown
 }
 
 @Preview(showBackground = true, heightDp = 780)
@@ -278,7 +279,7 @@ private fun failureRes(failure: AuthFailure): Int = when (failure) {
 private fun LoginContentPreview() {
     MachineGuardTheme {
         LoginContent(
-            state = LoginUiState(email = "demo@machineguard.com", failure = AuthFailure.InvalidCredentials),
+            state = LoginUiState(email = "demo@machineguard.com", failure = LoginFailure.InvalidCredentials),
             onEmailChange = {},
             onPasswordChange = {},
             onTogglePasswordVisibility = {},
