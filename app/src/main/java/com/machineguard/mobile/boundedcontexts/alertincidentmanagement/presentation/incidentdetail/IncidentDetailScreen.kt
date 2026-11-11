@@ -1,6 +1,7 @@
 package com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail
 
 import androidx.compose.foundation.background
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.alertText
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -173,6 +174,7 @@ private fun DetailContent(
 ) {
     val now = remember(detail) { OffsetDateTime.now() }
     val severity = detail.alert?.severity ?: AlertSeverity.UNKNOWN
+    val raisedText = detail.alert?.let { alertText(it.message, it.reading, it.historical, state.zoneName) }
     val escalatedAt = detail.alert?.escalatedAt
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
@@ -192,7 +194,7 @@ private fun DetailContent(
                     Box(Modifier.size(12.dp).background(severity.color(), CircleShape))
                     Text(stringResource(R.string.alerts_severity, stringResource(severity.labelRes())), style = MaterialTheme.typography.titleMedium)
                 }
-                Text(detail.alert?.message ?: stringResource(R.string.incident_detail_zone_fallback, detail.incident.monitoringZoneId))
+                Text(raisedText ?: stringResource(R.string.incident_detail_zone_fallback, detail.incident.monitoringZoneId))
                 Text(stringResource(R.string.incident_detail_status, stringResource(detail.incident.status.labelRes())))
                 val end = detail.incident.resolvedAt ?: now
                 Text(
@@ -215,7 +217,7 @@ private fun DetailContent(
         }
 
         Text(stringResource(R.string.incident_detail_timeline), style = MaterialTheme.typography.titleMedium)
-        detail.timeline().forEach { TimelineRow(it) }
+        detail.timeline(raisedText).forEach { TimelineRow(it) }
 
         if (state.canManage) {
             Text(stringResource(R.string.incident_detail_attention), style = MaterialTheme.typography.titleMedium)

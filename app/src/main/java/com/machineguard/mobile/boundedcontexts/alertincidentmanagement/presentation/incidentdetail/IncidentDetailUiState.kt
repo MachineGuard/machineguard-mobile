@@ -16,11 +16,11 @@ data class TimelineStep(
 }
 
 /** Construye la línea de tiempo con los datos que ya trae el detalle del incidente (sin pedir nada más al servidor). */
-fun IncidentDetail.timeline(): List<TimelineStep> {
+fun IncidentDetail.timeline(alertText: String? = alert?.message): List<TimelineStep> {
     val steps = mutableListOf<TimelineStep>()
     steps += TimelineStep(
         kind = TimelineStep.Kind.RAISED,
-        detail = alert?.message,
+        detail = alertText,
         at = alert?.raisedAt ?: incident.openedAt,
         done = true,
     )
@@ -67,6 +67,8 @@ data class IncidentDetailUiState(
     /** Los datos mostrados vienen de la copia local (sin conexión). */
     val fromCache: Boolean = false,
     val canManage: Boolean = false,
+    /** Nombre de la zona del incidente, si se pudo consultar. */
+    val zoneName: String? = null,
     /** Hay una escritura en curso: se bloquean los botones para no duplicarla. */
     val submitting: Boolean = false,
     val actionFailure: ActionFailure? = null,

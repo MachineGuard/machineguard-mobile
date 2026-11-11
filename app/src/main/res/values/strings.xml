@@ -39,4 +39,9 @@
     <string name="alerts_date_missing">No date available</string>
     <string name="alerts_severity_unknown">Not available</string>
     <string name="alerts_status_unknown">Not available</string>
+    <string name="alerts_reading_in_zone">%1$s out of range in %2$s: %3$s %4$s (safe range %5$s to %6$s %4$s)</string>
+    <string name="alerts_reading">%1$s out of range: %2$s %3$s (safe range %4$s to %5$s %3$s)</string>
+    <string name="alerts_reading_historical">Historical deviation: %1$s</string>
+    <string name="alerts_unit_temperature">°C</string>
+    <string name="alerts_unit_humidity" formatted="false">% RH</string>
 </resources>

@@ -37,4 +37,9 @@
     <string name="alerts_date_missing">Sin fecha disponible</string>
     <string name="alerts_severity_unknown">No disponible</string>
     <string name="alerts_status_unknown">No disponible</string>
+    <string name="alerts_reading_in_zone">%1$s fuera de rango en %2$s: %3$s %4$s (rango seguro %5$s a %6$s %4$s)</string>
+    <string name="alerts_reading">%1$s fuera de rango: %2$s %3$s (rango seguro %4$s a %5$s %3$s)</string>
+    <string name="alerts_reading_historical">Desviación histórica: %1$s</string>
+    <string name="alerts_unit_temperature">°C</string>
+    <string name="alerts_unit_humidity" formatted="false">% HR</string>
 </resources>

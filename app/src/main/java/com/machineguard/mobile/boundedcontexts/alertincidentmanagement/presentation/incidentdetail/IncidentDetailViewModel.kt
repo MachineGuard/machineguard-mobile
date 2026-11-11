@@ -80,7 +80,10 @@ class IncidentDetailViewModel(
         }
         when (val result = incidents.getIncident(incidentId)) {
             is DataResult.Success -> _state.update {
-                it.copy(loading = false, detail = result.data.withZoneName(), loadError = null, fromCache = result.isFromCache)
+                it.copy(
+                    loading = false, detail = result.data.withZoneName(), loadError = null, fromCache = result.isFromCache,
+                    zoneName = zoneNames[result.data.incident.monitoringZoneId],
+                )
             }
             is DataResult.Failure -> _state.update {
                 // Si ya hay datos en pantalla se conservan; el error solo se muestra cuando no hay nada.
