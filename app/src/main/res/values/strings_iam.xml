@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login -->
+    <string name="iam_brand">MachineGuard</string>
+    <string name="iam_tagline">Know before it spoils.</string>
+    <string name="iam_sign_in_title">Sign in</string>
+    <string name="iam_sign_in_subtitle">Access your monitoring dashboard</string>
+    <string name="iam_email_label">Email address</string>
+    <string name="iam_email_placeholder">you@company.com</string>
+    <string name="iam_password_label">Password</string>
+    <string name="iam_show_password">Show</string>
+    <string name="iam_hide_password">Hide</string>
+    <string name="iam_sign_in_button">Sign in</string>
+    <string name="iam_signing_in">Signing in…</string>
+    <string name="iam_terms">Terms</string>
+    <string name="iam_privacy">Privacy</string>
+    <string name="iam_checking_session">Checking your session…</string>
+
+    <!-- Login errors -->
+    <string name="iam_error_email_empty">Enter your email address.</string>
+    <string name="iam_error_email_invalid">Enter a valid email address.</string>
+    <string name="iam_error_password_empty">Enter your password.</string>
+    <string name="iam_error_invalid_credentials">Incorrect email or password.</string>
+    <string name="iam_error_account_disabled">This account is disabled. Contact your administrator.</string>
+    <string name="iam_error_network">No connection. Check your network and try again.</string>
+    <string name="iam_error_server">The service is unavailable. Try again later.</string>
+    <string name="iam_error_unknown">Something went wrong. Try again.</string>
+
+    <!-- Settings -->
+    <string name="iam_settings_title">Settings</string>
+    <string name="iam_settings_account">Account</string>
+    <string name="iam_settings_role">Role</string>
+    <string name="iam_settings_app">MachineGuard</string>
+    <string name="iam_settings_version">Version %1$s</string>
+    <string name="iam_role_admin">Administrator</string>
+    <string name="iam_role_viewer">Viewer</string>
+    <string name="iam_settings_sign_out">Sign out</string>
+    <string name="iam_settings_sign_out_title">Sign out of MachineGuard?</string>
+    <string name="iam_settings_sign_out_message">You will need to sign in again to see your zones and alerts.</string>
+    <string name="iam_settings_cancel">Cancel</string>
+</resources>
