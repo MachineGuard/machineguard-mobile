@@ -42,6 +42,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.machineguard.mobile.R
 import androidx.compose.ui.unit.dp
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.AlertSeverity
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.IncidentDetail
@@ -58,8 +61,11 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
     val snackbar = remember { SnackbarHostState() }
     var dialog by rememberSaveable { mutableStateOf(DialogKind.NONE) }
 
+    val context = LocalContext.current
     LaunchedEffect(state.lastSuccess, state.actionFailure) {
-        val message = state.lastSuccess?.successMessage() ?: state.actionFailure?.error?.message()
+        val failure = state.actionFailure?.error
+        val message = state.lastSuccess?.let { context.getString(it.successRes()) }
+            ?: failure?.let { it.serverReason() ?: context.getString(it.messageRes()) }
         if (message != null) {
             snackbar.showSnackbar(message)
             viewModel.dismissMessage()
@@ -69,10 +75,10 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detalle de alerta") },
+                title = { Text(stringResource(R.string.incident_detail_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.incident_detail_back))
                     }
                 },
             )
@@ -97,9 +103,9 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        Text(error?.message() ?: "No se pudo cargar el incidente.")
+                        Text(error?.let { stringResource(it.messageRes()) } ?: stringResource(R.string.incident_detail_load_failed))
                         if (error == null || error.isRetryable) {
-                            Button(onClick = viewModel::load) { Text("Reintentar") }
+                            Button(onClick = viewModel::load) { Text(stringResource(R.string.alerts_retry)) }
                         }
                     }
                 }
@@ -109,9 +115,9 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
 
     when (dialog) {
         DialogKind.ACKNOWLEDGE -> NoteDialog(
-            title = "Reconocer alerta",
-            fieldLabel = "Nota (opcional)",
-            confirm = "Reconocer",
+            title = stringResource(R.string.incident_dialog_ack_title),
+            fieldLabel = stringResource(R.string.incident_dialog_note_optional),
+            confirm = stringResource(R.string.incident_dialog_ack_confirm),
             required = false,
             maxLength = 500,
             onDismiss = { dialog = DialogKind.NONE },
@@ -121,12 +127,12 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
             },
         )
         DialogKind.ACTION -> NoteDialog(
-            title = "Registrar acción correctiva",
-            fieldLabel = "Descripción de la acción",
-            confirm = "Registrar",
+            title = stringResource(R.string.incident_dialog_action_title),
+            fieldLabel = stringResource(R.string.incident_dialog_action_description),
+            confirm = stringResource(R.string.incident_dialog_action_confirm),
             required = true,
             maxLength = 1000,
-            secondLabel = "Notas (opcional)",
+            secondLabel = stringResource(R.string.incident_dialog_action_notes),
             onDismiss = { dialog = DialogKind.NONE },
             onConfirm = { description, notes ->
                 dialog = DialogKind.NONE
@@ -134,9 +140,9 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
             },
         )
         DialogKind.RESOLVE -> NoteDialog(
-            title = "Resolver incidente",
-            fieldLabel = "Notas de resolución (opcional)",
-            confirm = "Resolver",
+            title = stringResource(R.string.incident_dialog_resolve_title),
+            fieldLabel = stringResource(R.string.incident_dialog_resolve_notes),
+            confirm = stringResource(R.string.incident_dialog_resolve_confirm),
             required = false,
             maxLength = 1000,
             onDismiss = { dialog = DialogKind.NONE },
@@ -166,7 +172,7 @@ private fun DetailContent(
     ) {
         if (state.fromCache) {
             Text(
-                "Sin conexión: se muestra la última copia guardada.",
+                stringResource(R.string.incident_detail_from_cache),
                 color = MgColors.Warn,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -176,44 +182,47 @@ private fun DetailContent(
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Box(Modifier.size(12.dp).background(severity.color(), CircleShape))
-                    Text("Severidad ${severity.label()}", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.alerts_severity, stringResource(severity.labelRes())), style = MaterialTheme.typography.titleMedium)
                 }
-                Text(detail.alert?.message ?: "Incidente en la zona ${detail.incident.monitoringZoneId}")
-                Text("Estado: ${detail.incident.status.label()}")
+                Text(detail.alert?.message ?: stringResource(R.string.incident_detail_zone_fallback, detail.incident.monitoringZoneId))
+                Text(stringResource(R.string.incident_detail_status, stringResource(detail.incident.status.labelRes())))
                 val end = detail.incident.resolvedAt ?: now
                 Text(
-                    "Transcurrido: ${elapsedLabel(detail.alert?.raisedAt ?: detail.incident.openedAt, end)}",
+                    stringResource(
+                        R.string.incident_detail_elapsed,
+                        elapsedLabel(detail.alert?.raisedAt ?: detail.incident.openedAt, end),
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                 )
                 if (escalatedAt != null) {
-                    Text("Escalada el ${escalatedAt.label()}", color = MgColors.Error)
+                    Text(stringResource(R.string.incident_detail_escalated_on, escalatedAt.label()), color = MgColors.Error)
                 }
                 if (detail.incident.historical) {
                     Text(
-                        "Histórico: ya no refleja la situación actual de la zona.",
+                        stringResource(R.string.incident_detail_historical),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
         }
 
-        Text("Línea de tiempo", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.incident_detail_timeline), style = MaterialTheme.typography.titleMedium)
         detail.timeline().forEach { TimelineRow(it) }
 
         if (state.canManage) {
-            Text("Atención del incidente", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.incident_detail_attention), style = MaterialTheme.typography.titleMedium)
             Button(onClick = onAcknowledge, enabled = state.canAcknowledge, modifier = Modifier.fillMaxWidth()) {
-                Text("Reconocer alerta")
+                Text(stringResource(R.string.incident_action_acknowledge))
             }
             OutlinedButton(
                 onClick = onRegisterAction,
                 enabled = state.canRegisterAction,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Registrar acción correctiva")
+                Text(stringResource(R.string.incident_action_register))
             }
             Button(onClick = onResolve, enabled = state.canResolve, modifier = Modifier.fillMaxWidth()) {
-                Text("Resolver incidente")
+                Text(stringResource(R.string.incident_action_resolve))
             }
             if (!state.canResolve && detail.incident.status.isActive) {
                 detail.resolutionBlockReasons.forEach {
@@ -221,7 +230,7 @@ private fun DetailContent(
                 }
             }
         } else {
-            Text("Tu rol es de solo lectura.", style = MaterialTheme.typography.bodySmall, color = MgColors.Slate)
+            Text(stringResource(R.string.incident_detail_read_only), style = MaterialTheme.typography.bodySmall, color = MgColors.Slate)
         }
     }
 }
@@ -234,10 +243,10 @@ private fun TimelineRow(step: TimelineStep) {
                 .background(if (step.done) MgColors.Ok else MgColors.Offline, CircleShape),
         )
         Column {
-            Text(step.title, style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(step.kind.titleRes()), style = MaterialTheme.typography.bodyLarge)
             step.detail?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
             Text(
-                if (step.done) step.at.label() else "Pendiente",
+                if (step.done) step.at.label() else stringResource(R.string.incident_detail_pending),
                 style = MaterialTheme.typography.bodySmall,
                 color = MgColors.Slate,
             )
@@ -284,7 +293,7 @@ private fun NoteDialog(
                 enabled = !required || first.isNotBlank(),
             ) { Text(confirm) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.incident_dialog_cancel)) } },
     )
 }
 

@@ -8,7 +8,6 @@ import java.time.OffsetDateTime
 /** Paso de la línea de tiempo del incidente: Detectada → Reconocida → Acción correctiva → Resuelta. */
 data class TimelineStep(
     val kind: Kind,
-    val title: String,
     val detail: String?,
     val at: OffsetDateTime?,
     val done: Boolean,
@@ -21,29 +20,26 @@ fun IncidentDetail.timeline(): List<TimelineStep> {
     val steps = mutableListOf<TimelineStep>()
     steps += TimelineStep(
         kind = TimelineStep.Kind.RAISED,
-        title = "Alerta detectada",
         detail = alert?.message,
         at = alert?.raisedAt ?: incident.openedAt,
         done = true,
     )
     steps += TimelineStep(
         kind = TimelineStep.Kind.ACKNOWLEDGED,
-        title = "Alerta reconocida",
         detail = acknowledgement?.let { listOfNotNull(it.acknowledgedBy, it.note).joinToString(" · ") },
         at = acknowledgement?.acknowledgedAt,
         done = acknowledgement != null,
     )
     alert?.escalatedAt?.let {
-        steps += TimelineStep(TimelineStep.Kind.ESCALATED, "Alerta escalada", null, it, done = true)
+        steps += TimelineStep(TimelineStep.Kind.ESCALATED, null, it, done = true)
     }
     if (correctiveActions.isEmpty()) {
-        steps += TimelineStep(TimelineStep.Kind.CORRECTIVE_ACTION, "Acción correctiva", null, null, done = false)
+        steps += TimelineStep(TimelineStep.Kind.CORRECTIVE_ACTION, null, null, done = false)
     } else {
         correctiveActions.sortedBy { it.performedAt }.forEach {
             steps += TimelineStep(
                 kind = TimelineStep.Kind.CORRECTIVE_ACTION,
-                title = "Acción correctiva",
-                detail = listOfNotNull(it.description, it.notes).joinToString(" · "),
+                        detail = listOfNotNull(it.description, it.notes).joinToString(" · "),
                 at = it.performedAt,
                 done = true,
             )
@@ -51,7 +47,6 @@ fun IncidentDetail.timeline(): List<TimelineStep> {
     }
     steps += TimelineStep(
         kind = TimelineStep.Kind.RESOLVED,
-        title = "Incidente resuelto",
         detail = incident.resolutionNotes,
         at = incident.resolvedAt,
         done = incident.status == IncidentStatus.RESOLVED,

@@ -15,7 +15,7 @@ import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentat
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.IncidentDetailViewModel
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.TimelineStep
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.elapsedLabel
-import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.message
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.serverReason
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.timeline
 import com.machineguard.mobile.core.data.AppError
 import com.machineguard.mobile.core.data.DataResult
@@ -155,8 +155,15 @@ class IncidentDetailTest {
         )
         val steps = d.timeline()
         assertEquals(
-            listOf("Alerta detectada", "Alerta reconocida", "Alerta escalada", "Acción correctiva", "Acción correctiva", "Incidente resuelto"),
-            steps.map { it.title },
+            listOf(
+                TimelineStep.Kind.RAISED,
+                TimelineStep.Kind.ACKNOWLEDGED,
+                TimelineStep.Kind.ESCALATED,
+                TimelineStep.Kind.CORRECTIVE_ACTION,
+                TimelineStep.Kind.CORRECTIVE_ACTION,
+                TimelineStep.Kind.RESOLVED,
+            ),
+            steps.map { it.kind },
         )
         assertEquals(listOf("primera", "segunda"), steps.filter { it.kind == TimelineStep.Kind.CORRECTIVE_ACTION }.map { it.detail })
         assertTrue(steps.all { it.done })
@@ -309,7 +316,7 @@ class IncidentDetailTest {
         val failure = vm.state.value.actionFailure
         assertNotNull(failure)
         assertEquals(ActionKind.RESOLVE, failure!!.action)
-        assertEquals("Incidente ya resuelto", failure.error.message())
+        assertEquals("Incidente ya resuelto", failure.error.serverReason())
         assertNull(vm.state.value.lastSuccess)
         assertFalse(vm.state.value.submitting)
         assertNotNull(vm.state.value.detail)

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incident_detail_title">Alert detail</string>
+    <string name="incident_detail_back">Back</string>
+    <string name="incident_detail_from_cache">Offline: showing the last saved copy.</string>
+    <string name="incident_detail_zone_fallback">Incident in zone %1$s</string>
+    <string name="incident_detail_status">Status: %1$s</string>
+    <string name="incident_detail_elapsed">Elapsed: %1$s</string>
+    <string name="incident_detail_escalated_on">Escalated on %1$s</string>
+    <string name="incident_detail_historical">Historical: it no longer reflects the zone\'s current situation.</string>
+    <string name="incident_detail_timeline">Timeline</string>
+    <string name="incident_detail_attention">Incident handling</string>
+    <string name="incident_detail_read_only">Your role is read-only.</string>
+    <string name="incident_detail_pending">Pending</string>
+    <string name="incident_detail_load_failed">Could not load the incident.</string>
+
+    <!-- Timeline steps -->
+    <string name="incident_step_raised">Alert raised</string>
+    <string name="incident_step_acknowledged">Alert acknowledged</string>
+    <string name="incident_step_escalated">Alert escalated</string>
+    <string name="incident_step_action">Corrective action</string>
+    <string name="incident_step_resolved">Incident resolved</string>
+
+    <!-- Incident status -->
+    <string name="incident_status_open">Open</string>
+    <string name="incident_status_acknowledged">Acknowledged</string>
+    <string name="incident_status_escalated">Escalated</string>
+    <string name="incident_status_resolved">Resolved</string>
+    <string name="incident_status_unknown">Unknown</string>
+
+    <!-- Actions and dialogs -->
+    <string name="incident_action_acknowledge">Acknowledge alert</string>
+    <string name="incident_action_register">Register corrective action</string>
+    <string name="incident_action_resolve">Resolve incident</string>
+    <string name="incident_dialog_cancel">Cancel</string>
+    <string name="incident_dialog_ack_title">Acknowledge alert</string>
+    <string name="incident_dialog_note_optional">Note (optional)</string>
+    <string name="incident_dialog_ack_confirm">Acknowledge</string>
+    <string name="incident_dialog_action_title">Register corrective action</string>
+    <string name="incident_dialog_action_description">Action description</string>
+    <string name="incident_dialog_action_notes">Notes (optional)</string>
+    <string name="incident_dialog_action_confirm">Register</string>
+    <string name="incident_dialog_resolve_title">Resolve incident</string>
+    <string name="incident_dialog_resolve_notes">Resolution notes (optional)</string>
+    <string name="incident_dialog_resolve_confirm">Resolve</string>
+
+    <!-- Results -->
+    <string name="incident_ok_acknowledge">Alert acknowledged.</string>
+    <string name="incident_ok_action">Corrective action registered.</string>
+    <string name="incident_ok_resolve">Incident resolved.</string>
+
+    <!-- Errors -->
+    <string name="incident_error_offline">No connection. Check your network and try again.</string>
+    <string name="incident_error_timeout">The server took too long to respond.</string>
+    <string name="incident_error_session_expired">Your session ended. Sign in again.</string>
+    <string name="incident_error_invalid_credentials">Wrong credentials.</string>
+    <string name="incident_error_forbidden">Your role is read-only: you cannot do this action.</string>
+    <string name="incident_error_not_found">The incident no longer exists or you do not have access.</string>
+    <string name="incident_error_conflict">The action is no longer possible: the incident changed.</string>
+    <string name="incident_error_invalid">Check the data you entered.</string>
+    <string name="incident_error_too_many">Too many attempts. Wait a moment.</string>
+    <string name="incident_error_server">The server had a problem. Try again later.</string>
+    <string name="incident_error_unknown">An unexpected error occurred.</string>
+</resources>

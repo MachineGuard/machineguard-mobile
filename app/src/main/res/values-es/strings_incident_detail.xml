@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incident_detail_title">Detalle de alerta</string>
+    <string name="incident_detail_back">Volver</string>
+    <string name="incident_detail_from_cache">Sin conexión: se muestra la última copia guardada.</string>
+    <string name="incident_detail_zone_fallback">Incidente en la zona %1$s</string>
+    <string name="incident_detail_status">Estado: %1$s</string>
+    <string name="incident_detail_elapsed">Transcurrido: %1$s</string>
+    <string name="incident_detail_escalated_on">Escalada el %1$s</string>
+    <string name="incident_detail_historical">Histórico: ya no refleja la situación actual de la zona.</string>
+    <string name="incident_detail_timeline">Línea de tiempo</string>
+    <string name="incident_detail_attention">Atención del incidente</string>
+    <string name="incident_detail_read_only">Tu rol es de solo lectura.</string>
+    <string name="incident_detail_pending">Pendiente</string>
+    <string name="incident_detail_load_failed">No se pudo cargar el incidente.</string>
+
+    <!-- Timeline steps -->
+    <string name="incident_step_raised">Alerta detectada</string>
+    <string name="incident_step_acknowledged">Alerta reconocida</string>
+    <string name="incident_step_escalated">Alerta escalada</string>
+    <string name="incident_step_action">Acción correctiva</string>
+    <string name="incident_step_resolved">Incidente resuelto</string>
+
+    <!-- Incident status -->
+    <string name="incident_status_open">Abierto</string>
+    <string name="incident_status_acknowledged">Reconocido</string>
+    <string name="incident_status_escalated">Escalado</string>
+    <string name="incident_status_resolved">Resuelto</string>
+    <string name="incident_status_unknown">Desconocido</string>
+
+    <!-- Actions and dialogs -->
+    <string name="incident_action_acknowledge">Reconocer alerta</string>
+    <string name="incident_action_register">Registrar acción correctiva</string>
+    <string name="incident_action_resolve">Resolver incidente</string>
+    <string name="incident_dialog_cancel">Cancelar</string>
+    <string name="incident_dialog_ack_title">Reconocer alerta</string>
+    <string name="incident_dialog_note_optional">Nota (opcional)</string>
+    <string name="incident_dialog_ack_confirm">Reconocer</string>
+    <string name="incident_dialog_action_title">Registrar acción correctiva</string>
+    <string name="incident_dialog_action_description">Descripción de la acción</string>
+    <string name="incident_dialog_action_notes">Notas (opcional)</string>
+    <string name="incident_dialog_action_confirm">Registrar</string>
+    <string name="incident_dialog_resolve_title">Resolver incidente</string>
+    <string name="incident_dialog_resolve_notes">Notas de resolución (opcional)</string>
+    <string name="incident_dialog_resolve_confirm">Resolver</string>
+
+    <!-- Results -->
+    <string name="incident_ok_acknowledge">Alerta reconocida.</string>
+    <string name="incident_ok_action">Acción correctiva registrada.</string>
+    <string name="incident_ok_resolve">Incidente resuelto.</string>
+
+    <!-- Errors -->
+    <string name="incident_error_offline">Sin conexión. Revisa tu red e inténtalo de nuevo.</string>
+    <string name="incident_error_timeout">El servidor tardó demasiado en responder.</string>
+    <string name="incident_error_session_expired">Tu sesión terminó. Inicia sesión de nuevo.</string>
+    <string name="incident_error_invalid_credentials">Credenciales incorrectas.</string>
+    <string name="incident_error_forbidden">Tu rol es de solo lectura: no puedes realizar esta acción.</string>
+    <string name="incident_error_not_found">El incidente ya no existe o no tienes acceso.</string>
+    <string name="incident_error_conflict">La acción ya no es posible: el incidente cambió.</string>
+    <string name="incident_error_invalid">Revisa los datos ingresados.</string>
+    <string name="incident_error_too_many">Demasiados intentos. Espera un momento.</string>
+    <string name="incident_error_server">El servidor tuvo un problema. Inténtalo más tarde.</string>
+    <string name="incident_error_unknown">Ocurrió un error inesperado.</string>
+</resources>
