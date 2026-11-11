@@ -61,4 +61,19 @@
     <string name="incident_error_too_many">Too many attempts. Wait a moment.</string>
     <string name="incident_error_server">The server had a problem. Try again later.</string>
     <string name="incident_error_unknown">An unexpected error occurred.</string>
+
+    <!-- Resolution block reasons (codes sent by the Core) -->
+    <string name="incident_reason_no_data">Physical readings are missing.</string>
+    <string name="incident_reason_stale">Physical readings are stale.</string>
+    <string name="incident_reason_missing_point">A required point has no physical evidence.</string>
+    <string name="incident_reason_manual_only">Manual readings do not establish physical recovery.</string>
+    <string name="incident_reason_out_of_range">The variable remains outside the safe range.</string>
+    <string name="incident_reason_legacy_unknown">Legacy readings have no verified source.</string>
+    <string name="incident_reason_missing_threshold">A threshold is missing.</string>
+    <string name="incident_reason_no_required_points">No eligible points are configured.</string>
+    <string name="incident_reason_zone_inactive">The zone is inactive.</string>
+    <string name="incident_reason_read_only">Your role allows viewing only.</string>
+    <string name="incident_reason_incident_resolved">The incident is already resolved.</string>
+    <string name="incident_reason_corrective_action_required">A corrective action must be recorded.</string>
+    <string name="incident_reason_unknown">Resolution eligibility could not be confirmed.</string>
 </resources>

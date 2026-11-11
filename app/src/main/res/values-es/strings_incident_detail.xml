@@ -61,4 +61,19 @@
     <string name="incident_error_too_many">Demasiados intentos. Espera un momento.</string>
     <string name="incident_error_server">El servidor tuvo un problema. Inténtalo más tarde.</string>
     <string name="incident_error_unknown">Ocurrió un error inesperado.</string>
+
+    <!-- Resolution block reasons (codes sent by the Core) -->
+    <string name="incident_reason_no_data">Faltan lecturas físicas.</string>
+    <string name="incident_reason_stale">Las lecturas físicas no están vigentes.</string>
+    <string name="incident_reason_missing_point">Un punto requerido no tiene evidencia física.</string>
+    <string name="incident_reason_manual_only">Las lecturas manuales no acreditan recuperación física.</string>
+    <string name="incident_reason_out_of_range">La variable sigue fuera del rango seguro.</string>
+    <string name="incident_reason_legacy_unknown">El origen de las lecturas anteriores no está acreditado.</string>
+    <string name="incident_reason_missing_threshold">Falta configurar el umbral.</string>
+    <string name="incident_reason_no_required_points">No hay puntos elegibles configurados.</string>
+    <string name="incident_reason_zone_inactive">La zona está inactiva.</string>
+    <string name="incident_reason_read_only">Tu rol solo permite consultar.</string>
+    <string name="incident_reason_incident_resolved">El incidente ya está resuelto.</string>
+    <string name="incident_reason_corrective_action_required">Falta registrar una acción correctiva.</string>
+    <string name="incident_reason_unknown">No se pudo confirmar el permiso de resolución.</string>
 </resources>

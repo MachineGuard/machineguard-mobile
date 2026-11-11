@@ -26,7 +26,7 @@ fun IncidentDetail.timeline(): List<TimelineStep> {
     )
     steps += TimelineStep(
         kind = TimelineStep.Kind.ACKNOWLEDGED,
-        detail = acknowledgement?.let { listOfNotNull(it.acknowledgedBy, it.note).joinToString(" · ") },
+        detail = acknowledgement?.note,
         at = acknowledgement?.acknowledgedAt,
         done = acknowledgement != null,
     )

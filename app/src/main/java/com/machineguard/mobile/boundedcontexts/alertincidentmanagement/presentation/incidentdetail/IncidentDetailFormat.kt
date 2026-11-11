@@ -7,11 +7,13 @@ import com.machineguard.mobile.R
 import com.machineguard.mobile.core.data.AppError
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private val dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
-fun OffsetDateTime?.label(): String = this?.format(dateTime) ?: "—"
+/** Fecha y hora en la zona horaria del dispositivo, igual que la lista de alertas. */
+fun OffsetDateTime?.label(): String = this?.atZoneSameInstant(ZoneId.systemDefault())?.format(dateTime) ?: "—"
 
 /** Tiempo transcurrido legible: "5 min", "2 h 10 min", "1 d 3 h". */
 fun elapsedLabel(from: OffsetDateTime?, to: OffsetDateTime): String {
@@ -78,4 +80,22 @@ fun ActionKind.successRes(): Int = when (this) {
     ActionKind.ACKNOWLEDGE -> R.string.incident_ok_acknowledge
     ActionKind.CORRECTIVE_ACTION -> R.string.incident_ok_action
     ActionKind.RESOLVE -> R.string.incident_ok_resolve
+}
+
+/** Texto de un motivo por el que todavía no se puede resolver; un código nuevo del servidor cae en el genérico. */
+@StringRes
+fun blockReasonRes(code: String): Int = when (code) {
+    "NO_DATA" -> R.string.incident_reason_no_data
+    "STALE" -> R.string.incident_reason_stale
+    "MISSING_POINT" -> R.string.incident_reason_missing_point
+    "MANUAL_ONLY" -> R.string.incident_reason_manual_only
+    "OUT_OF_RANGE" -> R.string.incident_reason_out_of_range
+    "LEGACY_UNKNOWN" -> R.string.incident_reason_legacy_unknown
+    "MISSING_THRESHOLD" -> R.string.incident_reason_missing_threshold
+    "NO_REQUIRED_POINTS" -> R.string.incident_reason_no_required_points
+    "ZONE_INACTIVE" -> R.string.incident_reason_zone_inactive
+    "READ_ONLY" -> R.string.incident_reason_read_only
+    "INCIDENT_RESOLVED" -> R.string.incident_reason_incident_resolved
+    "CORRECTIVE_ACTION_REQUIRED" -> R.string.incident_reason_corrective_action_required
+    else -> R.string.incident_reason_unknown
 }

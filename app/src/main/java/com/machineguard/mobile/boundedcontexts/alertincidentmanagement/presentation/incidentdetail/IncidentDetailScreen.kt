@@ -226,7 +226,7 @@ private fun DetailContent(
             }
             if (!state.canResolve && detail.incident.status.isActive) {
                 detail.resolutionBlockReasons.forEach {
-                    Text("• $it", style = MaterialTheme.typography.bodySmall, color = MgColors.Slate)
+                    Text("• ${stringResource(blockReasonRes(it))}", style = MaterialTheme.typography.bodySmall, color = MgColors.Slate)
                 }
             }
         } else {

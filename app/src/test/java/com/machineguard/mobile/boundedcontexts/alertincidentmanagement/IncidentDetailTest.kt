@@ -14,6 +14,8 @@ import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.In
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.ActionKind
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.IncidentDetailViewModel
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.TimelineStep
+import com.machineguard.mobile.R
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.blockReasonRes
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.elapsedLabel
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.serverReason
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation.incidentdetail.timeline
@@ -167,7 +169,7 @@ class IncidentDetailTest {
         )
         assertEquals(listOf("primera", "segunda"), steps.filter { it.kind == TimelineStep.Kind.CORRECTIVE_ACTION }.map { it.detail })
         assertTrue(steps.all { it.done })
-        assertEquals("admin · Voy en camino", steps[1].detail)
+        assertEquals("Voy en camino", steps[1].detail)
     }
 
     @Test
@@ -177,6 +179,13 @@ class IncidentDetailTest {
         assertEquals("1 d 3 h", elapsedLabel(T0, T0.plusHours(27)))
         assertEquals("0 min", elapsedLabel(T0, T0.minusMinutes(3)))
         assertEquals("—", elapsedLabel(null, T0))
+    }
+
+    @Test
+    fun `los motivos de bloqueo conocidos tienen texto y los nuevos caen en el generico`() {
+        assertEquals(R.string.incident_reason_missing_point, blockReasonRes("MISSING_POINT"))
+        assertEquals(R.string.incident_reason_corrective_action_required, blockReasonRes("CORRECTIVE_ACTION_REQUIRED"))
+        assertEquals(R.string.incident_reason_unknown, blockReasonRes("ALGO_NUEVO"))
     }
 
     @Test
