@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,6 +42,8 @@ private fun AppDestination.icon(): ImageVector = when (this) {
 @Composable
 fun AppShell() {
     var selected by rememberSaveable { mutableStateOf(AppDestination.Dashboard) }
+    // Keeps each tab's saved UI state (for example the alerts filter) when switching tabs.
+    val tabState = rememberSaveableStateHolder()
     // Incidente abierto desde la lista de alertas; mientras exista se muestra su detalle sobre la navegación.
     var openIncidentId by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -64,10 +67,12 @@ fun AppShell() {
         },
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            when (selected) {
-                AppDestination.Dashboard -> DashboardScreen()
-                AppDestination.Alerts -> AlertsScreen(onOpenIncident = { openIncidentId = it })
-                AppDestination.Settings -> SettingsScreen()
+            tabState.SaveableStateProvider(selected.name) {
+                when (selected) {
+                    AppDestination.Dashboard -> DashboardScreen()
+                    AppDestination.Alerts -> AlertsScreen(onOpenIncident = { openIncidentId = it })
+                    AppDestination.Settings -> SettingsScreen()
+                }
             }
         }
     }
@@ -84,5 +89,8 @@ private fun IncidentDetailRoute(incidentId: String, onBack: () -> Unit) {
         }
     }
     BackHandler(onBack = onBack)
-    IncidentDetailScreen(viewModel = viewModel(key = "incident-$incidentId-$canManage", factory = factory), onBack = onBack)
+    IncidentDetailScreen(
+        viewModel = viewModel(key = "incident-$incidentId-$canManage", factory = factory),
+        onBack = onBack,
+    )
 }
