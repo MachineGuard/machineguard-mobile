@@ -11,8 +11,6 @@
     <string name="alerts_loading">Cargando alertas…</string>
     <string name="alerts_empty">No hay alertas disponibles.</string>
     <string name="alerts_filter_empty">No hay alertas para este filtro. Prueba con otro estado.</string>
-    <string name="alerts_unavailable">Alertas no disponibles</string>
-    <string name="alerts_unavailable_description">Todavía no es posible consultar las alertas desde esta versión.</string>
     <string name="alerts_error">No pudimos cargar las alertas</string>
     <string name="alerts_error_description">Vuelve a intentarlo para consultar las alertas.</string>
     <string name="alerts_retry">Reintentar</string>
@@ -32,4 +30,6 @@
     <string name="alerts_acknowledged_at">Reconocida: %1$s</string>
     <string name="alerts_escalated_at">Escalada: %1$s</string>
     <string name="alerts_date_missing">Sin fecha disponible</string>
+    <string name="alerts_severity_unknown">No disponible</string>
+    <string name="alerts_status_unknown">No disponible</string>
 </resources>

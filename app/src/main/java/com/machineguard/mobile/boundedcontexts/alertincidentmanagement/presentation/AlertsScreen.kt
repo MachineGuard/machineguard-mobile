@@ -30,11 +30,15 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.machineguard.mobile.R
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun AlertsScreen() {
-    // Production stays honest until the mobile repository is available.
-    AlertsContent(AlertsUiState.Unavailable, onRetry = {})
+fun AlertsScreen(
+    viewModel: AlertsViewModel = viewModel(factory = AlertsViewModel.Factory),
+) {
+    val state by viewModel.state.collectAsState()
+    AlertsContent(state = state, onRetry = viewModel::retry)
 }
 
 /** The caller owns loading and retry; only the local display filter is saved here. */
@@ -79,9 +83,6 @@ fun AlertsContent(state: AlertsUiState, onRetry: () -> Unit, modifier: Modifier 
                 }
                 AlertsUiState.Empty -> item(key = "empty") {
                     AlertsMessage(stringResource(R.string.alerts_empty))
-                }
-                AlertsUiState.Unavailable -> item(key = "unavailable") {
-                    AlertsMessage(stringResource(R.string.alerts_unavailable), stringResource(R.string.alerts_unavailable_description))
                 }
                 AlertsUiState.Error -> item(key = "error") {
                     AlertsMessage(stringResource(R.string.alerts_error), stringResource(R.string.alerts_error_description)) {

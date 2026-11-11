@@ -22,7 +22,6 @@ class AlertsPreviewStates : PreviewParameterProvider<AlertsUiState> {
         AlertsUiState.Loading,
         AlertsUiState.Empty,
         AlertsUiState.Error,
-        AlertsUiState.Unavailable,
         AlertsUiState.fromAlerts(exampleAlerts()),
         // Content exists but the initial Active filter has no matches.
         AlertsUiState.fromAlerts(exampleAlerts().filter { it.status == AlertStatus.CLOSED }),

@@ -7,7 +7,6 @@ sealed interface AlertsUiState {
     data object Loading : AlertsUiState
     data object Empty : AlertsUiState
     data object Error : AlertsUiState
-    data object Unavailable : AlertsUiState
 
     @ConsistentCopyVisibility
     data class Content internal constructor(val alerts: List<AlertCardUiModel>) : AlertsUiState
@@ -30,8 +29,8 @@ data class AlertCardUiModel(
     val escalatedAt: OffsetDateTime?,
 )
 
-enum class AlertSeverity { LOW, MEDIUM, HIGH, CRITICAL }
-enum class AlertStatus { PENDING, ACKNOWLEDGED, ESCALATED, CLOSED }
+enum class AlertSeverity { LOW, MEDIUM, HIGH, CRITICAL, UNKNOWN }
+enum class AlertStatus { PENDING, ACKNOWLEDGED, ESCALATED, CLOSED, UNKNOWN }
 
 enum class AlertFilter {
     ACTIVE, ACKNOWLEDGED, ALL;

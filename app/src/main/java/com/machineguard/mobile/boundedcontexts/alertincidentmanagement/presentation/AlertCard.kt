@@ -48,6 +48,7 @@ private fun AlertSeverity.labelResource(): Int = when (this) {
     AlertSeverity.MEDIUM -> R.string.alerts_severity_medium
     AlertSeverity.HIGH -> R.string.alerts_severity_high
     AlertSeverity.CRITICAL -> R.string.alerts_severity_critical
+    AlertSeverity.UNKNOWN -> R.string.alerts_severity_unknown
 }
 
 private fun AlertStatus.labelResource(): Int = when (this) {
@@ -55,6 +56,7 @@ private fun AlertStatus.labelResource(): Int = when (this) {
     AlertStatus.ACKNOWLEDGED -> R.string.alerts_status_acknowledged
     AlertStatus.ESCALATED -> R.string.alerts_status_escalated
     AlertStatus.CLOSED -> R.string.alerts_status_closed
+    AlertStatus.UNKNOWN -> R.string.alerts_status_unknown
 }
 
 @Composable
