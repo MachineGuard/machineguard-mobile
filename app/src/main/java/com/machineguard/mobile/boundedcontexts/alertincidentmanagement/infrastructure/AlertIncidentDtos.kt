@@ -1,6 +1,9 @@
 package com.machineguard.mobile.boundedcontexts.alertincidentmanagement.infrastructure
 
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.Acknowledgement
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.AlertReading
+import java.math.BigDecimal
+import com.machineguard.mobile.core.network.BigDecimalLiteralSerializer
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.AcknowledgementResult
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.Alert
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.AlertSeverity
@@ -28,6 +31,14 @@ internal data class AlertDto(
     val acknowledgedAt: String? = null,
     val escalatedAt: String? = null,
     val historical: Boolean = false,
+    /** Lectura que originó la alerta; ausente en alertas anteriores a que el Core la expusiera. */
+    val environmentalVariable: String? = null,
+    @Serializable(with = BigDecimalLiteralSerializer::class)
+    val measuredValue: BigDecimal? = null,
+    @Serializable(with = BigDecimalLiteralSerializer::class)
+    val minimumValue: BigDecimal? = null,
+    @Serializable(with = BigDecimalLiteralSerializer::class)
+    val maximumValue: BigDecimal? = null,
 )
 
 @Serializable
@@ -104,7 +115,13 @@ internal fun AlertDto.toDomain(): Alert = Alert(
     acknowledgedAt = parseApiDate(acknowledgedAt),
     escalatedAt = parseApiDate(escalatedAt),
     historical = historical,
+    reading = readingOrNull(),
 )
+
+private fun AlertDto.readingOrNull(): AlertReading? {
+    val variable = EnvironmentalVariable.fromApiOrNull(environmentalVariable) ?: return null
+    return AlertReading(variable, measuredValue ?: return null, minimumValue ?: return null, maximumValue ?: return null)
+}
 
 internal fun IncidentDto.toDomain(): Incident = Incident(
     id = id,

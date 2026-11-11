@@ -127,6 +127,9 @@ internal fun Alert.toCardUiModel(zoneNames: Map<String, String> = emptyMap()): A
     raisedAt = raisedAt,
     acknowledgedAt = acknowledgedAt,
     escalatedAt = escalatedAt,
+    reading = reading,
+    zoneName = zoneNames[monitoringZoneId],
+    historical = historical,
 )
 
 private fun DomainAlertSeverity.toUi(): AlertSeverity = when (this) {

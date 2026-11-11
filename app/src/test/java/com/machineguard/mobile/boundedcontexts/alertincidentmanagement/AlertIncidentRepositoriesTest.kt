@@ -15,6 +15,7 @@ import com.machineguard.mobile.shared.domain.EnvironmentalVariable
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.infrastructure.parseAlert
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -84,6 +85,19 @@ class AlertIncidentRepositoriesTest {
         assertEquals(AlertStatus.UNKNOWN, list[1].status)
         assertNull(list[1].raisedAt)
         assertNull(list[1].incidentId)
+    }
+
+    @Test
+    fun `alert reading is parsed when the Core sends it and is null otherwise`() {
+        val withReading = parseAlert(
+            """{"id":"a1","monitoringZoneId":"z1","severity":"HIGH","status":"PENDING","message":"m",
+               "environmentalVariable":"HUMIDITY","measuredValue":67.50,"minimumValue":35.00,"maximumValue":60.00}""",
+        )
+        val reading = withReading.reading!!
+        assertEquals(com.machineguard.mobile.shared.domain.EnvironmentalVariable.HUMIDITY, reading.variable)
+        assertEquals(0, java.math.BigDecimal("67.5").compareTo(reading.value))
+        assertEquals(0, java.math.BigDecimal("60").compareTo(reading.maximum))
+        assertEquals(null, parseAlert("""{"id":"a2","message":"m"}""").reading)
     }
 
     @Test

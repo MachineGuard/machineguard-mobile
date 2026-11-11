@@ -1,5 +1,6 @@
 package com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presentation
 
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.AlertReading
 import java.time.OffsetDateTime
 
 /** Presentation projections, not DTOs or a replacement for the data team's repository. */
@@ -22,11 +23,15 @@ data class AlertCardUiModel(
     val id: String,
     val incidentId: String?,
     val severity: AlertSeverity,
+    /** Texto del servidor; se usa tal cual cuando no hay [reading]. */
     val message: String,
     val status: AlertStatus,
     val raisedAt: OffsetDateTime?,
     val acknowledgedAt: OffsetDateTime?,
     val escalatedAt: OffsetDateTime?,
+    val reading: AlertReading? = null,
+    val zoneName: String? = null,
+    val historical: Boolean = false,
 )
 
 enum class AlertSeverity { LOW, MEDIUM, HIGH, CRITICAL, UNKNOWN }

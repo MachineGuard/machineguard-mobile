@@ -1,6 +1,7 @@
 package com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain
 
 import com.machineguard.mobile.shared.domain.EnvironmentalVariable
+import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 enum class AlertSeverity {
@@ -63,6 +64,16 @@ data class Alert(
     val escalatedAt: OffsetDateTime?,
     /** Verdadero si el incidente de esta alerta ya no refleja la situación actual de la zona. */
     val historical: Boolean,
+    /** Lectura que originó la alerta y rango seguro; nula en alertas antiguas, que solo traen [message]. */
+    val reading: AlertReading? = null,
+)
+
+/** Variable, valor medido y rango seguro con que la app arma el texto de la alerta en su idioma. */
+data class AlertReading(
+    val variable: EnvironmentalVariable,
+    val value: BigDecimal,
+    val minimum: BigDecimal,
+    val maximum: BigDecimal,
 )
 
 data class Incident(

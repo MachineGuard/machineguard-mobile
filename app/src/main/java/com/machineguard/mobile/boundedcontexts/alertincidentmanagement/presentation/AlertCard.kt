@@ -27,7 +27,8 @@ import java.time.format.FormatStyle
 fun AlertCard(alert: AlertCardUiModel, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
     val body: @Composable () -> Unit = {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(alert.message.ifBlank { stringResource(R.string.alerts_message_missing) },
+            Text(alertText(alert.message, alert.reading, alert.historical, alert.zoneName)
+                    .ifBlank { stringResource(R.string.alerts_message_missing) },
                 modifier = Modifier.semantics { heading() }, style = MaterialTheme.typography.titleMedium)
             Text(stringResource(R.string.alerts_severity, stringResource(alert.severity.labelResource())),
                 style = MaterialTheme.typography.labelLarge,
