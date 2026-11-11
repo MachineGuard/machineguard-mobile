@@ -66,7 +66,9 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
         val failure = state.actionFailure?.error
         val message = state.lastSuccess?.let { context.getString(it.successRes()) }
             ?: failure?.let { it.serverReason() ?: context.getString(it.messageRes()) }
-        if (message != null) {
+        // El diálogo se cierra solo al confirmar el servidor; si falla queda abierto con el texto escrito.
+        if (state.lastSuccess != null) dialog = DialogKind.NONE
+        if (message != null && dialog == DialogKind.NONE) {
             snackbar.showSnackbar(message)
             viewModel.dismissMessage()
         }
@@ -120,11 +122,13 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
             confirm = stringResource(R.string.incident_dialog_ack_confirm),
             required = false,
             maxLength = 500,
-            onDismiss = { dialog = DialogKind.NONE },
-            onConfirm = { note, _ ->
+            submitting = state.submitting,
+            error = state.actionFailure?.error?.let { it.serverReason() ?: stringResource(it.messageRes()) },
+            onDismiss = {
                 dialog = DialogKind.NONE
-                viewModel.acknowledge(note)
+                viewModel.dismissMessage()
             },
+            onConfirm = { note, _ -> viewModel.acknowledge(note) },
         )
         DialogKind.ACTION -> NoteDialog(
             title = stringResource(R.string.incident_dialog_action_title),
@@ -133,11 +137,13 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
             required = true,
             maxLength = 1000,
             secondLabel = stringResource(R.string.incident_dialog_action_notes),
-            onDismiss = { dialog = DialogKind.NONE },
-            onConfirm = { description, notes ->
+            submitting = state.submitting,
+            error = state.actionFailure?.error?.let { it.serverReason() ?: stringResource(it.messageRes()) },
+            onDismiss = {
                 dialog = DialogKind.NONE
-                viewModel.registerCorrectiveAction(description, notes)
+                viewModel.dismissMessage()
             },
+            onConfirm = { description, notes -> viewModel.registerCorrectiveAction(description, notes) },
         )
         DialogKind.RESOLVE -> NoteDialog(
             title = stringResource(R.string.incident_dialog_resolve_title),
@@ -145,11 +151,13 @@ fun IncidentDetailScreen(viewModel: IncidentDetailViewModel, onBack: () -> Unit)
             confirm = stringResource(R.string.incident_dialog_resolve_confirm),
             required = false,
             maxLength = 1000,
-            onDismiss = { dialog = DialogKind.NONE },
-            onConfirm = { notes, _ ->
+            submitting = state.submitting,
+            error = state.actionFailure?.error?.let { it.serverReason() ?: stringResource(it.messageRes()) },
+            onDismiss = {
                 dialog = DialogKind.NONE
-                viewModel.resolve(notes)
+                viewModel.dismissMessage()
             },
+            onConfirm = { notes, _ -> viewModel.resolve(notes) },
         )
         DialogKind.NONE -> Unit
     }
@@ -262,6 +270,8 @@ private fun NoteDialog(
     required: Boolean,
     maxLength: Int,
     secondLabel: String? = null,
+    submitting: Boolean = false,
+    error: String? = null,
     onDismiss: () -> Unit,
     onConfirm: (String, String?) -> Unit,
 ) {
@@ -285,15 +295,16 @@ private fun NoteDialog(
                         label = { Text(secondLabel) },
                     )
                 }
+                error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
             }
         },
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(first, second.ifBlank { null }) },
-                enabled = !required || first.isNotBlank(),
+                enabled = !submitting && (!required || first.isNotBlank()),
             ) { Text(confirm) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.incident_dialog_cancel)) } },
+        dismissButton = { TextButton(onClick = onDismiss, enabled = !submitting) { Text(stringResource(R.string.incident_dialog_cancel)) } },
     )
 }
 

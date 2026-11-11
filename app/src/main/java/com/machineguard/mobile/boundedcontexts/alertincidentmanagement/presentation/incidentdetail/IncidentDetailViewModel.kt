@@ -2,7 +2,9 @@ package com.machineguard.mobile.boundedcontexts.alertincidentmanagement.presenta
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.IncidentDetail
 import com.machineguard.mobile.boundedcontexts.alertincidentmanagement.domain.IncidentsRepository
+import com.machineguard.mobile.boundedcontexts.environmentalmonitoring.domain.ZonesRepository
 import com.machineguard.mobile.core.data.DataResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,11 @@ class IncidentDetailViewModel(
     private val incidentId: String,
     private val incidents: IncidentsRepository,
     canManage: Boolean,
+    private val zonesRepository: ZonesRepository? = null,
 ) : ViewModel() {
+
+    /** Nombres de zona para mostrar en lugar del UUID que el Core escribe en el mensaje de la alerta. */
+    private var zoneNames: Map<String, String> = emptyMap()
 
     private val _state = MutableStateFlow(IncidentDetailUiState(canManage = canManage))
     val state: StateFlow<IncidentDetailUiState> = _state.asStateFlow()
@@ -69,15 +75,24 @@ class IncidentDetailViewModel(
     }
 
     private suspend fun fetch() {
+        if (zoneNames.isEmpty()) {
+            (zonesRepository?.getZones() as? DataResult.Success)?.let { zones -> zoneNames = zones.data.associate { it.id to it.name } }
+        }
         when (val result = incidents.getIncident(incidentId)) {
             is DataResult.Success -> _state.update {
-                it.copy(loading = false, detail = result.data, loadError = null, fromCache = result.isFromCache)
+                it.copy(loading = false, detail = result.data.withZoneName(), loadError = null, fromCache = result.isFromCache)
             }
             is DataResult.Failure -> _state.update {
                 // Si ya hay datos en pantalla se conservan; el error solo se muestra cuando no hay nada.
                 it.copy(loading = false, loadError = if (it.detail == null) result.error else null)
             }
         }
+    }
+
+    private fun IncidentDetail.withZoneName(): IncidentDetail {
+        val zoneId = incident.monitoringZoneId
+        val name = zoneNames[zoneId] ?: return this
+        return copy(alert = alert?.let { it.copy(message = it.message.replace(zoneId, name)) })
     }
 
     private fun String?.clean(): String? = this?.trim()?.takeIf { it.isNotEmpty() }
