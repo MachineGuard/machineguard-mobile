@@ -63,6 +63,7 @@ private const val PRIVACY_URL = "https://machineguard.example/privacy"
 
 @Composable
 fun LoginScreen(
+    sessionExpired: Boolean = false,
     viewModel: LoginViewModel = viewModel(factory = IamViewModelFactory.login),
 ) {
     val state by viewModel.state.collectAsState()
@@ -72,6 +73,7 @@ fun LoginScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onTogglePasswordVisibility = viewModel::onTogglePasswordVisibility,
         onSubmit = viewModel::submit,
+        sessionExpired = sessionExpired,
     )
 }
 
@@ -83,6 +85,7 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     onTogglePasswordVisibility: () -> Unit,
     onSubmit: () -> Unit,
+    sessionExpired: Boolean = false,
 ) {
     val emailMessage = state.emailError?.let { emailErrorRes(it) }
     val passwordMessage = state.passwordError?.let { passwordErrorRes(it) }
@@ -191,6 +194,15 @@ fun LoginContent(
                         }
                     },
                 )
+
+                if (sessionExpired && failureMessage == null) {
+                    Text(
+                        text = stringResource(R.string.iam_session_expired),
+                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
 
                 if (failureMessage != null) {
                     // Color + icono + texto: el error no depende solo del color.
