@@ -110,7 +110,7 @@ internal fun Zone.toCardUiModel(): ZoneCardUiModel = ZoneCardUiModel(
 )
 
 private fun Measurement.toReadingUiModel(zone: Zone): PointReadingUiModel = PointReadingUiModel(
-    pointName = zone.pointName(pointId) ?: "Punto sin nombre",
+    pointName = zone.pointName(pointId),
     variable = variable.toUi(),
     value = value,
     recordedAt = recordedAt,

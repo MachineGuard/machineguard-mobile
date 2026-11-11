@@ -65,7 +65,7 @@ private fun exampleContent(): DashboardUiState {
     return DashboardUiState.fromZones(ZoneCondition.entries.reversed().map { condition ->
         ZoneCardUiModel(
             id = condition.name,
-            name = "Zona de ejemplo · ${condition.label}",
+            name = "Zona de ejemplo · ${condition.name}",
             description = "Datos de muestra para revisión visual",
             condition = condition,
             sensorsOnline = if (condition == ZoneCondition.STALE) 0 else 1,

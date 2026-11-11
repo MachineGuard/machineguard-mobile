@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -95,6 +96,20 @@ class DashboardViewModelTest {
         assertEquals(listOf("Puerta"), card.readings.map { it.pointName })
         assertEquals(ReadingVariable.HUMIDITY, card.readings.single().variable)
         assertEquals(BigDecimal("65.00"), card.readings.single().value)
+    }
+
+    @Test
+    fun `a reading whose point is not in the zone has no point name for the UI to localize`() {
+        val reading = Measurement(
+            id = "m-2", zoneId = "z-1", pointId = "p-missing", variable = EnvironmentalVariable.TEMPERATURE,
+            value = BigDecimal("4.20"), recordedAt = OffsetDateTime.parse("2026-11-10T11:58:00Z"),
+            source = MeasurementSource.SENSOR, freshness = Freshness.FRESH,
+        )
+        val repo = FakeZonesRepository(DataResult.Success(listOf(zone("z-1", DomainZoneCondition.NORMAL, readings = listOf(reading)))))
+
+        val card = (DashboardViewModel(repo, MutableStateFlow(signedIn)).state.value as DashboardUiState.Content).zones.single()
+
+        assertNull(card.readings.single().pointName)
     }
 
     @Test
