@@ -85,7 +85,7 @@ private fun IncidentDetailRoute(incidentId: String, onBack: () -> Unit) {
     val canManage = (session as? SessionState.SignedIn)?.user?.canManageIncidents == true
     val factory = remember(incidentId, canManage) {
         viewModelFactory {
-            initializer { IncidentDetailViewModel(incidentId, container.incidentsRepository, canManage) }
+            initializer { IncidentDetailViewModel(incidentId, container.incidentsRepository, canManage, container.zonesRepository) }
         }
     }
     BackHandler(onBack = onBack)
