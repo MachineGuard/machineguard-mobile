@@ -69,8 +69,8 @@ private fun exampleContent(): DashboardUiState {
             name = "Zona de ejemplo · ${condition.label}",
             description = "Datos de muestra para revisión visual",
             condition = condition,
-            sensorsOnline = if (condition == ZoneCondition.OFFLINE) 0 else 1,
-            sensorsOffline = if (condition == ZoneCondition.OFFLINE) 1 else 0,
+            sensorsOnline = if (condition == ZoneCondition.STALE) 0 else 1,
+            sensorsOffline = if (condition == ZoneCondition.STALE) 1 else 0,
             sensorsInactive = 0,
             lastUpdatedAt = if (condition == ZoneCondition.NO_DATA) null else recordedAt,
             readings = if (condition == ZoneCondition.NO_DATA) emptyList() else listOf(

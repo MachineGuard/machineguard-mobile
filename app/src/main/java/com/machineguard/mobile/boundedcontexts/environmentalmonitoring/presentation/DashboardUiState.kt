@@ -25,10 +25,9 @@ sealed interface DashboardUiState {
 /** Environmental condition, distinct from administrative ACTIVE/INACTIVE status. */
 enum class ZoneCondition(val label: String, val priority: Int) {
     OUT_OF_RANGE("Fuera de rango", 0),
-    NEAR_LIMIT("Cerca del límite", 1),
-    OFFLINE("Sin conexión", 2),
-    NO_DATA("Sin datos", 3),
-    NORMAL("Normal", 4),
+    STALE("Desactualizada", 1),
+    NO_DATA("Sin datos", 2),
+    NORMAL("Normal", 3),
 }
 
 data class ZoneCardUiModel(

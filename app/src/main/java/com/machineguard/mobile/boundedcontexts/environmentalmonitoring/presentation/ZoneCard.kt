@@ -36,8 +36,8 @@ fun ZoneCard(zone: ZoneCardUiModel, modifier: Modifier = Modifier) {
             )
             Text("Sensores: ${zone.sensorsOnline} en línea · ${zone.sensorsOffline} sin conexión · ${zone.sensorsInactive} inactivos")
             HorizontalDivider()
-            if (zone.condition == ZoneCondition.OFFLINE && zone.readings.isNotEmpty()) {
-                Text("Últimas lecturas registradas; la zona está sin conexión.")
+            if (zone.condition == ZoneCondition.STALE && zone.readings.isNotEmpty()) {
+                Text("Últimas lecturas registradas; la información está desactualizada.")
             }
             if (zone.readings.isEmpty()) Text("Sin lecturas disponibles")
             zone.readings.forEach { reading ->

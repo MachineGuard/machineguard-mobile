@@ -6,12 +6,13 @@ import java.time.OffsetDateTime
 
 /**
  * Condición ambiental de una zona. Es distinta del estado administrativo (activa/inactiva): una zona activa puede
- * estar [OUT_OF_RANGE], [OFFLINE], etc. Coincide con `environmentalCondition` del Core API.
+ * estar [OUT_OF_RANGE], [STALE], etc. Coincide con `environmentalCondition` del Core API.
  */
 enum class ZoneCondition {
     OUT_OF_RANGE,
-    NEAR_LIMIT,
-    OFFLINE,
+
+    /** Hay lecturas, pero alguna está desactualizada o falta un punto. */
+    STALE,
     NO_DATA,
     NORMAL,
 
