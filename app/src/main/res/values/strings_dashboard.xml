@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dashboard screen -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_subtitle">Environmental zones and monitoring</string>
+    <string name="dashboard_loading">Loading zones…</string>
+    <string name="dashboard_empty">No zones available.</string>
+    <string name="dashboard_error_title">We could not load the zones</string>
+    <string name="dashboard_error_description">Try again to check the readings.</string>
+    <string name="dashboard_retry">Retry</string>
+
+    <!-- Zone card -->
+    <string name="dashboard_sensors_summary">Sensors: %1$d online · %2$d offline · %3$d inactive</string>
+    <string name="dashboard_stale_notice">Latest recorded readings; the information is out of date.</string>
+    <string name="dashboard_readings_missing">No readings available</string>
+    <string name="dashboard_reading_missing">No reading</string>
+    <string name="dashboard_recorded_at">Recorded: %1$s</string>
+    <string name="dashboard_last_updated">Last updated: %1$s</string>
+    <string name="dashboard_date_missing">No date available</string>
+    <string name="dashboard_point_unnamed">Unnamed point</string>
+
+    <!-- Zone conditions -->
+    <string name="dashboard_condition_out_of_range">Out of range</string>
+    <string name="dashboard_condition_stale">Outdated</string>
+    <string name="dashboard_condition_no_data">No data</string>
+    <string name="dashboard_condition_normal">Normal</string>
+
+    <!-- Reading variables -->
+    <string name="dashboard_variable_temperature">Temperature</string>
+    <string name="dashboard_variable_humidity">Humidity</string>
+</resources>

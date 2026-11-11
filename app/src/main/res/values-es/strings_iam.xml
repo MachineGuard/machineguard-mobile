@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login -->
+    <string name="iam_brand">MachineGuard</string>
+    <string name="iam_tagline">Anticípate antes de que se eche a perder.</string>
+    <string name="iam_sign_in_title">Iniciar sesión</string>
+    <string name="iam_sign_in_subtitle">Accede a tu panel de monitoreo</string>
+    <string name="iam_email_label">Correo electrónico</string>
+    <string name="iam_email_placeholder">tu@empresa.com</string>
+    <string name="iam_password_label">Contraseña</string>
+    <string name="iam_show_password">Mostrar</string>
+    <string name="iam_hide_password">Ocultar</string>
+    <string name="iam_sign_in_button">Iniciar sesión</string>
+    <string name="iam_signing_in">Iniciando sesión…</string>
+    <string name="iam_terms">Términos</string>
+    <string name="iam_privacy">Privacidad</string>
+    <string name="iam_checking_session">Comprobando tu sesión…</string>
+
+    <!-- Login errors -->
+    <string name="iam_error_email_empty">Ingresa tu correo electrónico.</string>
+    <string name="iam_error_email_invalid">Ingresa un correo electrónico válido.</string>
+    <string name="iam_error_password_empty">Ingresa tu contraseña.</string>
+    <string name="iam_error_invalid_credentials">Correo o contraseña incorrectos.</string>
+    <string name="iam_error_too_many_requests">Demasiados intentos. Espera un momento e inténtalo de nuevo.</string>
+    <string name="iam_session_expired">Tu sesión terminó. Inicia sesión de nuevo.</string>
+    <string name="iam_error_account_disabled">Esta cuenta está deshabilitada. Contacta a tu administrador.</string>
+    <string name="iam_error_network">Sin conexión. Revisa tu red e inténtalo de nuevo.</string>
+    <string name="iam_error_server">El servicio no está disponible. Inténtalo más tarde.</string>
+    <string name="iam_error_unknown">Algo salió mal. Inténtalo de nuevo.</string>
+
+    <!-- Settings -->
+    <string name="iam_settings_title">Ajustes</string>
+    <string name="iam_settings_account">Cuenta</string>
+    <string name="iam_settings_role">Rol</string>
+    <string name="iam_settings_app">MachineGuard</string>
+    <string name="iam_settings_version">Versión %1$s</string>
+    <string name="iam_role_admin">Administrador</string>
+    <string name="iam_role_viewer">Solo lectura</string>
+    <string name="iam_settings_sign_out">Cerrar sesión</string>
+    <string name="iam_settings_sign_out_title">¿Cerrar sesión en MachineGuard?</string>
+    <string name="iam_settings_sign_out_message">Tendrás que iniciar sesión de nuevo para ver tus zonas y alertas.</string>
+    <string name="iam_settings_cancel">Cancelar</string>
+</resources>

@@ -1,4 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MachineGuard</string>
+    <string name="app_name" translatable="false">MachineGuard</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">Alerts</string>
+    <string name="alerts_subtitle">Alert status and severity</string>
+    <string name="alerts_filters">Filter by status</string>
+    <string name="alerts_filter_active">Active</string>
+    <string name="alerts_filter_acknowledged">Acknowledged</string>
+    <string name="alerts_filter_all">All</string>
+    <string name="alerts_active_description">Includes pending and escalated alerts.</string>
+    <string name="alerts_loading">Loading alerts…</string>
+    <string name="alerts_empty">No alerts available.</string>
+    <string name="alerts_filter_empty">No alerts match this filter. Try another status.</string>
+    <string name="alerts_error">We could not load the alerts</string>
+    <string name="alerts_error_description">Try again to check the alerts.</string>
+    <string name="alerts_retry">Retry</string>
+    <string name="alerts_result_count">Alerts shown: %1$d</string>
+    <string name="alerts_message_missing">Alert without description</string>
+    <string name="alerts_severity">Severity: %1$s</string>
+    <string name="alerts_severity_low">Low</string>
+    <string name="alerts_severity_medium">Medium</string>
+    <string name="alerts_severity_high">High</string>
+    <string name="alerts_severity_critical">Critical</string>
+    <string name="alerts_status">Status: %1$s</string>
+    <string name="alerts_status_pending">Pending</string>
+    <string name="alerts_status_acknowledged">Acknowledged</string>
+    <string name="alerts_status_escalated">Escalated</string>
+    <string name="alerts_status_closed">Closed</string>
+    <string name="alerts_raised_at">Raised: %1$s</string>
+    <string name="alerts_acknowledged_at">Acknowledged: %1$s</string>
+    <string name="alerts_escalated_at">Escalated: %1$s</string>
+    <string name="alerts_date_missing">No date available</string>
+    <string name="alerts_severity_unknown">Not available</string>
+    <string name="alerts_status_unknown">Not available</string>
+    <string name="alerts_reading_in_zone">%1$s out of range in %2$s: %3$s %4$s (safe range %5$s to %6$s %4$s)</string>
+    <string name="alerts_reading">%1$s out of range: %2$s %3$s (safe range %4$s to %5$s %3$s)</string>
+    <string name="alerts_reading_historical">Historical deviation: %1$s</string>
+    <string name="alerts_unit_temperature">°C</string>
+    <string name="alerts_unit_humidity" formatted="false">% RH</string>
 </resources>

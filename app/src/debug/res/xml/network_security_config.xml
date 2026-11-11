@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Solo compilaciones debug. Permite HTTP hacia el Core local: el emulador (10.0.2.2) o un celular físico que se conecta
+  a la IP privada de la laptop en la misma red. La compilación release no usa esta configuración y sigue exigiendo HTTPS.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

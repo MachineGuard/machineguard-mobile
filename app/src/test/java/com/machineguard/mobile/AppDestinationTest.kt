@@ -7,8 +7,8 @@ class AppDestinationTest {
     @Test
     fun `bottom navigation has the three destinations from the design`() {
         assertEquals(
-            listOf("Dashboard", "Alerts", "Settings"),
-            AppDestination.entries.map { it.label },
+            listOf(R.string.nav_dashboard, R.string.nav_alerts, R.string.nav_settings),
+            AppDestination.entries.map { it.labelRes },
         )
     }
 }
