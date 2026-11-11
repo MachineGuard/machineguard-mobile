@@ -30,7 +30,7 @@ fun AuthGate(
     val state by viewModel.state.collectAsState()
     when (state) {
         SessionState.Restoring -> CheckingSession()
-        is SessionState.SignedOut -> LoginScreen()
+        is SessionState.SignedOut -> LoginScreen(sessionExpired = (state as SessionState.SignedOut).expired)
         is SessionState.SignedIn -> content()
     }
 }

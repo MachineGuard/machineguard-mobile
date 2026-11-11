@@ -33,11 +33,16 @@ class DashboardViewModel(
     private val _state = MutableStateFlow<DashboardUiState>(DashboardUiState.Loading)
     val state: StateFlow<DashboardUiState> = _state.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
     private var loadJob: Job? = null
+    private var signedIn = false
 
     init {
         viewModelScope.launch {
             session.map { it is SessionState.SignedIn }.distinctUntilChanged().collect { signedIn ->
+                this@DashboardViewModel.signedIn = signedIn
                 if (signedIn) load() else reset()
             }
         }
@@ -46,19 +51,38 @@ class DashboardViewModel(
     /** Reintentar. Vuelve a consultar el servidor; si no hay conexión, el repositorio devuelve la copia guardada. */
     fun retry() = load()
 
+    /**
+     * Actualizar al volver a la pestaña o al deslizar hacia abajo. Mantiene las zonas visibles mientras consulta y no
+     * hace nada si no hay sesión o ya hay una consulta en curso.
+     */
+    fun refresh() {
+        if (!signedIn || loadJob?.isActive == true) return
+        if (_state.value !is DashboardUiState.Content) return load()
+        _isRefreshing.value = true
+        loadJob = viewModelScope.launch {
+            fetch()?.let { _state.value = it }
+            _isRefreshing.value = false
+        }
+    }
+
     private fun load() {
         loadJob?.cancel()
+        _isRefreshing.value = false
         _state.value = DashboardUiState.Loading
         loadJob = viewModelScope.launch {
-            _state.value = when (val result = zonesRepository.getZones()) {
-                is DataResult.Success -> DashboardUiState.fromZones(result.data.map { it.toCardUiModel() })
-                is DataResult.Failure -> DashboardUiState.Error
-            }
+            _state.value = fetch() ?: DashboardUiState.Error
         }
+    }
+
+    /** Devuelve null si falló la consulta. */
+    private suspend fun fetch(): DashboardUiState? = when (val result = zonesRepository.getZones()) {
+        is DataResult.Success -> DashboardUiState.fromZones(result.data.map { it.toCardUiModel() })
+        is DataResult.Failure -> null
     }
 
     private fun reset() {
         loadJob?.cancel()
+        _isRefreshing.value = false
         _state.value = DashboardUiState.Loading
     }
 

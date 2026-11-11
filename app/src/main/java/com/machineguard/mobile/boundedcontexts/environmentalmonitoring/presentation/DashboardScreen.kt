@@ -14,6 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,12 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory),
 ) {
     val state by viewModel.state.collectAsState()
-    DashboardContent(state = state, onRetry = viewModel::retry)
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    // Cada vez que se entra a la pestaña se consultan datos nuevos sin ocultar los actuales.
+    LaunchedEffect(Unit) { viewModel.refresh() }
+    PullToRefreshBox(isRefreshing = isRefreshing, onRefresh = viewModel::refresh) {
+        DashboardContent(state = state, onRetry = viewModel::retry)
+    }
 }
 
 /** State and events belong to the caller. This UI never fetches or fabricates readings. */

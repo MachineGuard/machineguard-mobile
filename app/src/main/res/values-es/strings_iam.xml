@@ -22,6 +22,7 @@
     <string name="iam_error_password_empty">Ingresa tu contraseña.</string>
     <string name="iam_error_invalid_credentials">Correo o contraseña incorrectos.</string>
     <string name="iam_error_too_many_requests">Demasiados intentos. Espera un momento e inténtalo de nuevo.</string>
+    <string name="iam_session_expired">Tu sesión terminó. Inicia sesión de nuevo.</string>
     <string name="iam_error_account_disabled">Esta cuenta está deshabilitada. Contacta a tu administrador.</string>
     <string name="iam_error_network">Sin conexión. Revisa tu red e inténtalo de nuevo.</string>
     <string name="iam_error_server">El servicio no está disponible. Inténtalo más tarde.</string>

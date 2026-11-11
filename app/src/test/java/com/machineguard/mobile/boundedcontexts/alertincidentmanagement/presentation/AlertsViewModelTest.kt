@@ -93,6 +93,26 @@ class AlertsViewModelTest {
         assertEquals(AlertsUiState.Loading, viewModel.state.value)
     }
 
+    @Test
+    fun `zone id in the message is replaced by the zone name when known`() {
+        val raw = alert("a-1", DomainAlertStatus.PENDING, DomainAlertSeverity.HIGH).copy(message = "HUMIDITY fuera de rango en la zona zone-1")
+
+        assertEquals("HUMIDITY fuera de rango en la zona Cámara fría A", raw.toCardUiModel(mapOf("zone-1" to "Cámara fría A")).message)
+        assertEquals("HUMIDITY fuera de rango en la zona zone-1", raw.toCardUiModel().message)
+    }
+
+    @Test
+    fun `failed refresh keeps the previous alerts`() {
+        val repo = FakeAlertsRepository(DataResult.Success(listOf(alert("a-1", DomainAlertStatus.PENDING, DomainAlertSeverity.LOW))))
+        val viewModel = AlertsViewModel(repo, MutableStateFlow(signedIn))
+
+        repo.result = DataResult.Failure(AppError.Timeout)
+        viewModel.refresh()
+
+        assertEquals(listOf("a-1"), (viewModel.state.value as AlertsUiState.Content).alerts.map { it.id })
+        assertEquals(false, viewModel.isRefreshing.value)
+    }
+
     private fun alert(id: String, status: DomainAlertStatus, severity: DomainAlertSeverity) = Alert(
         id = id,
         incidentId = "incident-$id",
