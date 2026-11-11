@@ -23,7 +23,6 @@ class DashboardPreviewStates : PreviewParameterProvider<DashboardUiState> {
         DashboardUiState.Loading,
         DashboardUiState.Empty,
         DashboardUiState.Error,
-        DashboardUiState.Unavailable,
         exampleContent(),
     )
 }

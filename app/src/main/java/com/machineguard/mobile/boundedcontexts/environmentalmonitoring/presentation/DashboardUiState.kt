@@ -9,7 +9,6 @@ sealed interface DashboardUiState {
     data object Loading : DashboardUiState
     data object Empty : DashboardUiState
     data object Error : DashboardUiState
-    data object Unavailable : DashboardUiState
     @ConsistentCopyVisibility
     data class Content internal constructor(val zones: List<ZoneCardUiModel>) : DashboardUiState
 

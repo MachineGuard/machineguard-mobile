@@ -14,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -22,11 +24,14 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun DashboardScreen() {
-    // No repository is available yet. Sample readings exist only in debug previews.
-    DashboardContent(DashboardUiState.Unavailable, onRetry = {})
+fun DashboardScreen(
+    viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory),
+) {
+    val state by viewModel.state.collectAsState()
+    DashboardContent(state = state, onRetry = viewModel::retry)
 }
 
 /** State and events belong to the caller. This UI never fetches or fabricates readings. */
@@ -49,9 +54,6 @@ fun DashboardContent(state: DashboardUiState, onRetry: () -> Unit, modifier: Mod
                 }
                 DashboardUiState.Empty -> item(key = "empty") {
                     DashboardMessage("No hay zonas disponibles.")
-                }
-                DashboardUiState.Unavailable -> item(key = "unavailable") {
-                    DashboardMessage("Monitoreo no disponible", "Todavía no es posible consultar las zonas desde esta versión.")
                 }
                 DashboardUiState.Error -> item(key = "error") {
                     DashboardMessage("No pudimos cargar las zonas", "Vuelve a intentarlo para consultar las lecturas.") {
